@@ -3,17 +3,17 @@ import memoize from 'lodash.memoize';
 
 const selectShop = state => state.shop;
 
-export const selectShopCollections = createSelector(
+export const selectCollections = createSelector(
     [selectShop],
     (shop) => shop.collections
 );
 
-export const selectCollectionForPreview = createSelector(
-    [selectShopCollections],
+export const selectCollectionsForPreview = createSelector(
+    [selectCollections],
     collections => Object.keys(collections).map(key => collections[key])
 );
 
 export const selectCollection = memoize((collectionUrlParam) => createSelector(
-    [selectShopCollections],
+    [selectCollections],
     collections => collections[collectionUrlParam]
 ));

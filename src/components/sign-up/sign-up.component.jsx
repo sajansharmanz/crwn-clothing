@@ -1,29 +1,31 @@
-import React from "react";
-import "./sign-up.stykes.scss";
+import React from 'react';
 
-import FormInput from "../form-input/form-input.component";
-import CustomButton from "../custom-button/custom-button.component";
+import FormInput from '../form-input/form-input.component';
+import CustomButton from '../custom-button/custom-button.component';
 
-import { auth, createUserProfileDocument } from "../../firebase/firebase.utils";
+import { auth, createUserProfileDocument } from '../../firebase/firebase.utils';
+
+import { SignUpContainer, SignUpTitle } from './sign-up.styles';
 
 class SignUp extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      displayName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
+      displayName: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
     };
   }
 
-  handleSubmit = async (e) => {
-    e.preventDefault();
+  handleSubmit = async event => {
+    event.preventDefault();
+
     const { displayName, email, password, confirmPassword } = this.state;
 
     if (password !== confirmPassword) {
-      alert("Passwords don't match");
+      alert("passwords don't match");
       return;
     }
 
@@ -33,21 +35,21 @@ class SignUp extends React.Component {
         password
       );
 
-      createUserProfileDocument(user, { displayName });
+      await createUserProfileDocument(user, { displayName });
 
       this.setState({
-        displayName: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
+        displayName: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
-  handleChange = (e) => {
-    const { name, value } = e.target;
+  handleChange = event => {
+    const { name, value } = event.target;
 
     this.setState({ [name]: value });
   };
@@ -55,50 +57,45 @@ class SignUp extends React.Component {
   render() {
     const { displayName, email, password, confirmPassword } = this.state;
     return (
-      <div className="sign-up">
-        <h1 className="title">I do not have an account</h1>
+      <SignUpContainer>
+        <SignUpTitle>I do not have a account</SignUpTitle>
         <span>Sign up with your email and password</span>
-
-        <form className="sign-up-form" onSubmit={this.handleSubmit}>
+        <form className='sign-up-form' onSubmit={this.handleSubmit}>
           <FormInput
-            type="text"
-            name="displayName"
-            label="Display name"
+            type='text'
+            name='displayName'
             value={displayName}
             onChange={this.handleChange}
+            label='Display Name'
             required
           />
-
           <FormInput
-            type="email"
-            name="email"
-            label="Email"
+            type='email'
+            name='email'
             value={email}
             onChange={this.handleChange}
+            label='Email'
             required
           />
-
           <FormInput
-            type="password"
-            name="password"
-            label="password"
+            type='password'
+            name='password'
             value={password}
             onChange={this.handleChange}
+            label='Password'
             required
           />
-
           <FormInput
-            type="password"
-            name="confirmPassword"
-            label="Confirm password"
+            type='password'
+            name='confirmPassword'
             value={confirmPassword}
             onChange={this.handleChange}
+            label='Confirm Password'
             required
           />
-
-          <CustomButton type="submit">Sign Up</CustomButton>
+          <CustomButton type='submit'>SIGN UP</CustomButton>
         </form>
-      </div>
+      </SignUpContainer>
     );
   }
 }
